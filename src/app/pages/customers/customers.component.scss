@@ -1,0 +1,181 @@
+.page {
+  max-width: 980px;
+}
+
+.title {
+  font-size: 34px;
+  font-weight: 500;
+  margin: 0 0 18px 0;
+  color: #2f2f2f;
+}
+
+.search-row {
+  margin-bottom: 14px;
+}
+
+.search-input {
+  width: 320px;
+  height: 38px;
+}
+
+.card {
+  border: 1px solid #efefef;
+  border-radius: 4px;
+  padding: 12px;
+  background: #fff;
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  padding: 28px 0;
+}
+
+
+:host ::ng-deep .p-datatable .p-datatable-thead > tr > th {
+  font-weight: 700;
+}
+
+
+
+:host ::ng-deep th.actions,
+:host ::ng-deep td.actions {
+  text-align: center;
+  white-space: nowrap;
+}
+
+:host ::ng-deep td.actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+
+:host ::ng-deep td.actions .p-inputswitch,
+:host ::ng-deep td.actions .p-checkbox {
+  display: none !important;
+}
+
+
+:host ::ng-deep .btn-accounts.p-button,
+:host ::ng-deep .btn-report.p-button {
+  height: 34px;
+  padding: 0 12px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1;
+  box-shadow: none;
+}
+
+
+:host ::ng-deep .btn-accounts.p-button {
+  border: 1px solid #d6e2ff;
+  background: #f4f7ff;
+  color: #1f4fbf;
+}
+
+:host ::ng-deep .btn-accounts.p-button:hover {
+  background: #e9f0ff;
+  border-color: #bcd0ff;
+}
+
+:host ::ng-deep .btn-accounts.p-button:active {
+  transform: translateY(1px);
+}
+
+:host ::ng-deep .btn-accounts.p-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(31, 79, 191, 0.18);
+}
+
+
+:host ::ng-deep .btn-report.p-button {
+  border: 1px solid #ffd3d3;
+  background: #fff5f5;
+  color: #b91c1c;
+}
+
+:host ::ng-deep .btn-report.p-button:hover {
+  background: #ffe8e8;
+  border-color: #ffbdbd;
+}
+
+:host ::ng-deep .btn-report.p-button:active {
+  transform: translateY(1px);
+}
+
+:host ::ng-deep .btn-report.p-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(185, 28, 28, 0.18);
+}
+
+
+:host ::ng-deep .btn-accounts.p-button .p-button-icon,
+:host ::ng-deep .btn-report.p-button .p-button-icon {
+  font-size: 14px;
+}
+
+
+:host ::ng-deep .btn-accounts.p-button .p-button-label,
+:host ::ng-deep .btn-report.p-button .p-button-label {
+  font-weight: 600;
+}
+
+:host ::ng-deep td.actions .p-button {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  height: 34px !important;
+  padding: 0 12px !important;
+
+  border-radius: 999px !important;
+  border-width: 1px !important;
+  border-style: solid !important;
+
+  font-family: inherit !important; 
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  line-height: 1 !important;
+
+  text-decoration: none !important;
+}
+
+:host ::ng-deep td.actions .p-button .p-button-label {
+  display: inline !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  margin-left: 6px !important;
+  font-weight: 600 !important;
+}
+
+:host ::ng-deep td.actions .p-button .p-button-icon {
+  display: inline-flex !important;
+  font-size: 14px !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+
+:host ::ng-deep td.actions {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 10px !important;
+  white-space: nowrap !important;
+}
+
+
+:host ::ng-deep .btn-accounts.p-button {
+  border-color: #d6e2ff !important;
+  background: #f4f7ff !important;
+  color: #1f4fbf !important;
+}
+
+:host ::ng-deep .btn-report.p-button {
+  border-color: #ffd3d3 !important;
+  background: #fff5f5 !important;
+  color: #b91c1c !important;
+}

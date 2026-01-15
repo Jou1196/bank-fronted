@@ -1,0 +1,69 @@
+<p-toast></p-toast>
+
+<div class="page">
+  <div class="header">
+    <h1>Movimientos</h1>
+
+    <button class="btn-back" (click)="back()">
+      <i class="pi pi-arrow-left"></i> Volver
+    </button>
+  </div>
+
+ 
+  <div class="form-card">
+    <div class="field">
+      <label>Fecha</label>
+      <p-calendar [(ngModel)]="movementDate" dateFormat="yy-mm-dd"></p-calendar>
+    </div>
+
+    <div class="field">
+      <label>Tipo</label>
+      <p-dropdown
+        [options]="types"
+        [(ngModel)]="movementType"
+        placeholder="Seleccione"
+      ></p-dropdown>
+    </div>
+
+    <div class="field">
+      <label>Monto</label>
+      <p-inputNumber
+        [(ngModel)]="amount"
+        mode="decimal"
+        [min]="0.01"
+      ></p-inputNumber>
+    </div>
+
+    <button class="btn-primary" (click)="createMovement()">Guardar</button>
+  </div>
+
+
+  <p-table [value]="movements" [loading]="loading">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Fecha</th>
+        <th>Tipo</th>
+        <th>Monto</th>
+        <th>Saldo Disponible</th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-m>
+      <tr>
+        <td>{{ m.movementDate }}</td>
+        <td [ngClass]="m.movementType.toLowerCase()">
+          {{ m.movementType }}
+        </td>
+        <td>{{ m.amount | number:'1.2-2' }}</td>
+        <td>{{ m.availableBalance | number:'1.2-2' }}</td>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="4">No movements</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+

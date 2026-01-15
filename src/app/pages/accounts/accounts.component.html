@@ -1,0 +1,77 @@
+<p-toast></p-toast>
+
+<div class="page">
+  <div class="header-row">
+    <h1 class="title">Cuentas</h1>
+
+    <div class="actions">
+      <button
+        pButton
+        type="button"
+        label="Volver"
+        icon="pi pi-arrow-left"
+        class="p-button-secondary"
+        (click)="backToCustomers()"
+      ></button>
+
+      <button
+        pButton
+        type="button"
+        label="Refrescar"
+        icon="pi pi-refresh"
+        (click)="loadAccounts()"
+      ></button>
+    </div>
+  </div>
+
+  <div class="subtitle">
+    Customer ID: <span class="mono">{{ customerId }}</span>
+  </div>
+
+  <div class="card">
+    <div *ngIf="loading" class="loading">
+      <p-progressSpinner></p-progressSpinner>
+    </div>
+
+    <p-table
+      *ngIf="!loading"
+      [value]="accounts"
+      [tableStyle]="{ 'min-width': '900px' }"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Número</th>
+          <th>Tipo</th>
+          <th>Saldo Inicial</th>
+          <th>Estado</th>
+          <th style="width: 170px;">Acciones</th>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-a>
+        <tr>
+          <td>{{ a.accountNumber }}</td>
+          <td>{{ a.accountType }}</td>
+          <td>{{ a.initialBalance | number: '1.2-2' }}</td>
+          <td>{{ a.active ? 'True' : 'False' }}</td>
+          <td>
+            <button
+              pButton
+              type="button"
+              label="Movimientos"
+              icon="pi pi-external-link"
+              (click)="goMovements(a)"
+            ></button>
+          </td>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="5">Sin cuentas</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>
+

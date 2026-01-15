@@ -1,0 +1,44 @@
+<p-toast></p-toast>
+
+<div class="page">
+  <h1 class="title">Reportes</h1>
+
+  <p class="subtitle">
+    Reporte (Estado de cuenta) por rango de fechas para un cliente.
+  </p>
+
+  <div class="form-row">
+    <div class="field">
+      <label>Desde</label>
+      <p-datepicker [(ngModel)]="fromDate" [showIcon]="true" dateFormat="yy-mm-dd"></p-datepicker>
+    </div>
+
+    <div class="field">
+      <label>Hasta</label>
+      <p-datepicker [(ngModel)]="toDate" [showIcon]="true" dateFormat="yy-mm-dd"></p-datepicker>
+    </div>
+
+    <div class="field actions">
+      <button
+        pButton
+        type="button"
+        icon="pi pi-download"
+        label="Descargar PDF"
+        class="btn-download"
+        [loading]="loading"
+        (click)="downloadPdf()"
+      ></button>
+    </div>
+    <div>
+        <button
+  pButton
+  type="button"
+  icon="pi pi-arrow-left"
+  label="Volver a clientes"
+  class="p-button-link back-btn"
+  (click)="goBackToCustomers()"
+></button>
+
+    </div>
+  </div>
+</div>

@@ -1,0 +1,57 @@
+.page {
+  max-width: 900px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.form-card {
+  display: flex;
+  gap: 16px;
+  align-items: end;
+  padding: 14px;
+  border: 1px solid #e5e9f2;
+  border-radius: 6px;
+  margin-bottom: 16px;
+  background: #fff;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.btn-primary {
+  height: 36px;
+  padding: 0 18px;
+  border-radius: 6px;
+  border: none;
+  background: #1f4fbf;
+  color: #fff;
+  cursor: pointer;
+}
+
+.btn-primary:hover {
+  background: #163fa3;
+}
+
+.btn-back {
+  background: transparent;
+  border: none;
+  color: #1f4fbf;
+  cursor: pointer;
+}
+
+.credit {
+  color: #0f9d58;
+  font-weight: 600;
+}
+
+.debit {
+  color: #d93025;
+  font-weight: 600;
+}

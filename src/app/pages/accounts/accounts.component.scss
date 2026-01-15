@@ -1,0 +1,46 @@
+.page {
+  max-width: 980px;
+}
+
+.header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.title {
+  font-size: 34px;
+  font-weight: 500;
+  margin: 0;
+  color: #2f2f2f;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+}
+
+.subtitle {
+  margin: 8px 0 14px 0;
+  color: #666;
+  font-size: 13px;
+}
+
+.mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+    "Courier New", monospace;
+}
+
+.card {
+  border: 1px solid #efefef;
+  border-radius: 4px;
+  padding: 12px;
+  background: #fff;
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  padding: 28px 0;
+}

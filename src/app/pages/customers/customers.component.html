@@ -1,0 +1,61 @@
+<p-toast></p-toast>
+
+<div class="page">
+  <h1 class="title">Clientes</h1>
+
+  <div class="search-row">
+    <input
+      pInputText
+      type="text"
+      [(ngModel)]="search"
+      placeholder="Buscar"
+      class="search-input"
+    />
+  </div>
+
+  <div class="card">
+    <div *ngIf="loading" class="loading">
+      <p-progressSpinner></p-progressSpinner>
+    </div>
+
+    <p-table
+      *ngIf="!loading"
+      [value]="filtered"
+      [tableStyle]="{ 'min-width': '720px' }"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Nombre</th>
+          <th>Usuario</th>
+          <th>Identificación</th>
+          <th>Estado</th>
+          <th style="width: 140px; text-align:center;">Acciones</th>
+
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-c>
+        <tr>
+          <td>{{ c.name }}</td>
+          <td>{{ c.customerCode }}</td>
+          <td>{{ c.identification || '-' }}</td>
+          <td>{{ c.active ? 'True' : 'False' }}</td>
+        <td class="actions">
+  <!-- Ir a cuentas -->
+<button pButton type="button" icon="pi pi-wallet" label="Cuentas" class="btn-accounts" (click)="goAccounts(c)"></button>
+<button pButton type="button" icon="pi pi-file-pdf" label="Reporte" class="btn-report" (click)="goReports(c)"></button>
+
+</td>
+
+
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="4">Sin datos</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>
