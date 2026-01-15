@@ -1,27 +1,74 @@
-# AngularCrm
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.20.
 
-## Development server
+ Observar la documentacion de los servicios rest en http://localhost:8080/swagger-ui/index.html para visualizar de mejor manera los endpoinst se agrego swwagger
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
 
-## Code scaffolding
+# 💻 Angular CRM – Frontend
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Frontend del sistema de banca desarrollado en Angular, encargado de la visualización de clientes, cuentas, movimientos y generación de reportes en PDF, consumiendo un backend en Spring Boot.
 
-## Build
+## 🚀 Tecnologías
+Angular 18 · TypeScript · PrimeNG · RxJS · SCSS · Jest
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+## 📁 Estructura
+angular-crm/
+src/app/pages/customers  
+src/app/pages/accounts  
+src/app/pages/movements  
+src/app/pages/reports  
+src/app/services  
 
-## Running unit tests
+## ▶️ Requisitos
+Node.js 18+ · Angular CLI
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+## ▶️ Instalación
+npm install
 
-## Running end-to-end tests
+## ▶️ Ejecución
+ng serve  
+http://localhost:4200
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+## 🔗 Backend
+El frontend consume APIs desde:  
+http://localhost:8080
 
-## Further help
+Ejemplo:
+GET /reports?customerId={uuid}&from=yyyy-MM-dd&to=yyyy-MM-dd
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## 📄 Funcionalidades
+Customers: listado, búsqueda, navegación a cuentas y reportes  
+Accounts: listado de cuentas por cliente  
+Movements: movimientos por cuenta  
+Reports: selección de fechas, generación y descarga de PDF, botón regresar
+
+## 🧪 Tests
+Tests básicos con Jest:
+npm run test:jest
+
+Componentes cubiertos:
+Customers · Accounts · Movements · Reports
+
+## 🎨 UI
+PrimeNG, diseño responsivo, SCSS modular, Toast para mensajes, botones de navegación claros.
+
+## 🐳 Docker (opcional)
+FROM node:18-alpine  
+WORKDIR /app  
+COPY . .  
+RUN npm install  
+RUN npm run build  
+EXPOSE 4200  
+CMD ["npm","run","start"]
+
+Build:
+docker build -t angular-crm .
+
+Run:
+docker run -p 4200:4200 angular-crm
+
+## ✅ Estado
+Frontend funcional, integrado con backend, reportes PDF operativos y tests mínimos configurados.
+
+## 👨‍💻 Autor
+Angular CRM – Frontend  
+Sistema de Banca
