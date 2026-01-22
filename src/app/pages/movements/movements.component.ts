@@ -38,14 +38,16 @@ export class MovementsComponent implements OnInit {
   movements: Movement[] = [];
   loading = false;
 
-  movementType: 'CREDIT' | 'DEBIT' | null = null;
   amount: number | null = null;
   movementDate: Date = new Date();
 
-  types = [
-    { label: 'Crédito', value: 'CREDIT' },
-    { label: 'Débito', value: 'DEBIT' },
-  ];
+movementType: 'DEPOSIT' | 'WITHDRAWAL' | null = null;
+
+types = [
+  { label: 'Depósito', value: 'DEPOSIT' },
+  { label: 'Retiro', value: 'WITHDRAWAL' },
+];
+
 
   constructor(
     private route: ActivatedRoute,
@@ -73,31 +75,32 @@ export class MovementsComponent implements OnInit {
     });
   }
 
-  createMovement(): void {
-    if (!this.movementType || !this.amount) {
-      this.showError('All fields are required');
-      return;
-    }
 
-    this.movementService
-      .create({
-        accountId: this.accountId,
-        movementDate: this.movementDate.toISOString().substring(0, 10),
-        movementType: this.movementType,
-        amount: this.amount,
-      })
-      .subscribe({
-        next: () => {
-          this.showSuccess('Movement created');
-          this.amount = null;
-          this.movementType = null;
-          this.loadMovements();
-        },
-        error: (err) => {
-          this.showError(err?.error?.message || 'Operation failed');
-        },
-      });
+
+createMovement(): void {
+  if (!this.movementType || !this.amount) {
+    this.showError('All fields are required');
+    return;
   }
+
+  this.movementService.create({
+    accountId: this.accountId,
+    type: this.movementType,
+    amount: this.amount,
+  }).subscribe({
+    next: () => {
+      this.showSuccess('Movement created');
+      this.amount = null;
+      this.movementType = null;
+      this.loadMovements();
+    },
+    error: (err) => {
+      this.showError(err?.error?.message || 'Operation failed');
+    },
+  });
+}
+
+
 
   back(): void {
     this.router.navigate(['/customers']);

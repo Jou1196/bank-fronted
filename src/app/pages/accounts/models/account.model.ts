@@ -1,8 +1,10 @@
 export interface Account {
   id: string;
   accountNumber: string;
-  accountType: string;   // SAVINGS / CHECKING
+  type: 'AHORRO' | 'CORRIENTE';
   initialBalance: number;
-  active: boolean;
+  status: boolean;
   customerId: string;
+  balance?: number;
 }
+

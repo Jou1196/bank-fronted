@@ -70,11 +70,10 @@ export class CustomersComponent implements OnInit {
     const s = this.search.trim().toLowerCase();
     if (!s) return this.customers;
 
-    return this.customers.filter((c) =>
-      `${c.name ?? ''} ${c.customerCode ?? ''} ${c.identification ?? ''}`
-        .toLowerCase()
-        .includes(s)
-    );
+   return this.customers.filter((c) =>
+  `${c.fullName ?? ''} ${c.identification ?? ''}`.toLowerCase().includes(s)
+);
+
   }
 
   goReports(c: Customer): void {

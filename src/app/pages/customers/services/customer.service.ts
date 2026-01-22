@@ -1,35 +1,28 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Customer } from '../models/customer';
 import { environment } from '../../../../enviroment/environment';
+import { Customer } from '../models/customer';
 
-
-export interface CreateCustomerRequest {
-  customerCode: string;
+export interface CustomerCreateRequest {
+  identification: string;
+  phone: string;
   password: string;
-  active: boolean;
-  name: string;
-  gender?: string | null;
-  age?: number | null;
-  identification?: string | null;
-  address?: string | null;
-  phone?: string | null;
+  fullName: string;
+  address: string;
+  status: boolean;
 }
 
-export interface UpdateCustomerRequest {
+export interface CustomerUpdateRequest {
+  phone: string;
   password: string;
-  active: boolean;
-  name: string;
-  gender?: string | null;
-  age?: number | null;
-  identification?: string | null;
-  address?: string | null;
-  phone?: string | null;
+  fullName: string;
+  address: string;
+  status: boolean;
 }
 
 @Injectable({ providedIn: 'root' })
 export class CustomerService {
-  private readonly baseUrl = `${environment.apiUrl}/customers`;
+  private readonly baseUrl = `${environment.apiUrl}/clientes`;
 
   constructor(private http: HttpClient) {}
 
@@ -41,12 +34,12 @@ export class CustomerService {
     return this.http.get<Customer>(`${this.baseUrl}/${id}`);
   }
 
-  create(payload: CreateCustomerRequest) {
-    return this.http.post<Customer>(this.baseUrl, payload);
+  create(payload: CustomerCreateRequest) {
+    return this.http.post<any>(this.baseUrl, payload);
   }
 
-  update(id: string, payload: UpdateCustomerRequest) {
-    return this.http.put<Customer>(`${this.baseUrl}/${id}`, payload);
+  update(id: string, payload: CustomerUpdateRequest) {
+    return this.http.put<any>(`${this.baseUrl}/${id}`, payload);
   }
 
   delete(id: string) {

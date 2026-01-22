@@ -51,11 +51,9 @@
     <ng-template pTemplate="body" let-m>
       <tr>
         <td>{{ m.movementDate }}</td>
-        <td [ngClass]="m.movementType.toLowerCase()">
-          {{ m.movementType }}
-        </td>
+        <td>{{ m.type }}</td>
         <td>{{ m.amount | number:'1.2-2' }}</td>
-        <td>{{ m.availableBalance | number:'1.2-2' }}</td>
+        <td>{{ m.balanceAfter | number:'1.2-2' }}</td>
       </tr>
     </ng-template>
 

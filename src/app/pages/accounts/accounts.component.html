@@ -42,7 +42,6 @@
         <tr>
           <th>Número</th>
           <th>Tipo</th>
-          <th>Saldo Inicial</th>
           <th>Estado</th>
           <th style="width: 170px;">Acciones</th>
         </tr>
@@ -51,9 +50,8 @@
       <ng-template pTemplate="body" let-a>
         <tr>
           <td>{{ a.accountNumber }}</td>
-          <td>{{ a.accountType }}</td>
-          <td>{{ a.initialBalance | number: '1.2-2' }}</td>
-          <td>{{ a.active ? 'True' : 'False' }}</td>
+          <td>{{ a.type }}</td>
+         <td>{{ a.status ? 'Activo' : 'Inactivo' }}</td>
           <td>
             <button
               pButton

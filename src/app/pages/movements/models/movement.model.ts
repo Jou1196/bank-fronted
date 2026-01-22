@@ -1,7 +1,16 @@
 export interface Movement {
   id: string;
-  movementDate: string;
-  movementType: 'CREDIT' | 'DEBIT';
+  accountId: string;
+
+
+  accountNumber?: string;
+
+  type: 'DEPOSIT' | 'WITHDRAWAL';
   amount: number;
-  availableBalance: number;
+
+  balanceBefore: number;
+  balanceAfter: number;
+
+  movementDate: string; 
+  createdAt?: string;  
 }

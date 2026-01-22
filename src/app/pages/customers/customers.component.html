@@ -26,7 +26,6 @@
       <ng-template pTemplate="header">
         <tr>
           <th>Nombre</th>
-          <th>Usuario</th>
           <th>Identificación</th>
           <th>Estado</th>
           <th style="width: 140px; text-align:center;">Acciones</th>
@@ -36,10 +35,9 @@
 
       <ng-template pTemplate="body" let-c>
         <tr>
-          <td>{{ c.name }}</td>
-          <td>{{ c.customerCode }}</td>
+         <td>{{ c.fullName }}</td>
           <td>{{ c.identification || '-' }}</td>
-          <td>{{ c.active ? 'True' : 'False' }}</td>
+         <td>{{ c.status ? 'Activo' : 'Inactivo' }}</td>
         <td class="actions">
   <!-- Ir a cuentas -->
 <button pButton type="button" icon="pi pi-wallet" label="Cuentas" class="btn-accounts" (click)="goAccounts(c)"></button>

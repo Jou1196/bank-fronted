@@ -1,28 +1,39 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-
-import { Account } from '../models/account.model';
 import { environment } from '../../../../enviroment/environment';
+import { Account } from '../models/account.model';
 
 export interface CreateAccountRequest {
   accountNumber: string;
-  accountType: string;
+  type: 'AHORRO' | 'CORRIENTE';
   initialBalance: number;
-  active: boolean;
+  status: boolean;
   customerId: string;
 }
 
 @Injectable({ providedIn: 'root' })
 export class AccountService {
-  private readonly baseUrl = `${environment.apiUrl}/accounts`;
+  private readonly baseUrl = `${environment.apiUrl}/cuentas`;
 
   constructor(private http: HttpClient) {}
 
+  getAll() {
+    return this.http.get<Account[]>(this.baseUrl);
+  }
+
+  getById(id: string) {
+    return this.http.get<any>(`${this.baseUrl}/${id}`);
+  }
+
   getByCustomer(customerId: string) {
-    return this.http.get<Account[]>(`${this.baseUrl}?customerId=${customerId}`);
+    return this.http.get<Account[]>(`${this.baseUrl}/por-cliente/${customerId}`);
   }
 
   create(payload: CreateAccountRequest) {
-    return this.http.post<Account>(this.baseUrl, payload);
+    return this.http.post<any>(this.baseUrl, payload);
+  }
+
+  delete(id: string) {
+    return this.http.delete<void>(`${this.baseUrl}/${id}`);
   }
 }
