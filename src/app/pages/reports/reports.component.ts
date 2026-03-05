@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { HttpClient, HttpParams } from '@angular/common/http';
 
 import { ButtonModule } from 'primeng/button';
 import { DatePickerModule } from 'primeng/datepicker';
@@ -10,36 +9,8 @@ import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 
 import jsPDF from 'jspdf';
-import { forkJoin } from 'rxjs';
-import { environment } from '../../../enviroment/environment';
 
-type ApiAccount = {
-  id: string;
-  accountNumber: string;
-  type: 'AHORRO' | 'CORRIENTE' | string;
-  balance: number;
-  status: boolean;
-  customerId: string;
-};
-
-type ApiMovement = {
-  id: string;
-  accountId: string;
-  accountNumber?: string;
-  type: 'DEPOSIT' | 'WITHDRAWAL' | string;
-  amount: number;
-  balanceBefore?: number;
-  balanceAfter?: number;
-  movementDate: string; // "YYYY-MM-DD"
-};
-
-type ApiCustomer = {
-  id: string;
-  fullName?: string;
-  name?: string;
-  customerCode?: string;
-  identification?: string;
-};
+import { ReportService } from './services/report.service';
 
 @Component({
   selector: 'app-reports',
@@ -50,23 +21,21 @@ type ApiCustomer = {
   styleUrls: ['./reports.component.scss'],
 })
 export class ReportsComponent implements OnInit {
+
   customerId = '';
   fromDate: Date = new Date();
   toDate: Date = new Date();
   loading = false;
 
-  private readonly API_CUSTOMERS = `${environment.apiUrl}/clientes`;
-  private readonly API_ACCOUNTS = `${environment.apiUrl}/cuentas`;
-  private readonly API_MOVEMENTS = `${environment.apiUrl}/movimientos`;
-
   constructor(
     private route: ActivatedRoute,
-    private http: HttpClient,
+    private reportService: ReportService,
     private msg: MessageService,
     private router: Router
   ) {}
 
   ngOnInit(): void {
+
     this.customerId = this.route.snapshot.queryParamMap.get('customerId') ?? '';
 
     const today = new Date();
@@ -82,51 +51,63 @@ export class ReportsComponent implements OnInit {
   }
 
   downloadPdf(): void {
+
     if (!this.customerId) {
-      this.msg.add({ severity: 'warn', summary: 'Warning', detail: 'customerId is required' });
+      this.msg.add({
+        severity: 'warn',
+        summary: 'Warning',
+        detail: 'customerId is required'
+      });
       return;
     }
 
-    const from = this.toIsoDate(this.fromDate);
+   const from = this.toIsoDate(this.fromDate);
     const to = this.toIsoDate(this.toDate);
-
-    const customer$ = this.http.get<ApiCustomer>(`${this.API_CUSTOMERS}/${this.customerId}`);
-    const accounts$ = this.http.get<ApiAccount[]>(`${this.API_ACCOUNTS}/por-cliente/${this.customerId}`);
-    const movements$ = this.http.get<ApiMovement[]>(
-      `${this.API_MOVEMENTS}/por-cliente`,
-      { params: new HttpParams().set('customerId', this.customerId).set('from', from).set('to', to) }
-    );
-
     this.loading = true;
 
-    forkJoin({ customer: customer$, accounts: accounts$, movements: movements$ }).subscribe({
-      next: ({ customer, accounts, movements }) => {
-        this.loading = false;
+    this.reportService.estadoCuenta(this.customerId, from, to)
+      .subscribe({
 
-        const totalDeposit = (movements ?? [])
-          .filter(m => String(m.type).toUpperCase() === 'DEPOSIT')
-          .reduce((acc, m) => acc + Number(m.amount || 0), 0);
+        next: (resp: any) => {
 
-        const totalWithdrawal = (movements ?? [])
-          .filter(m => String(m.type).toUpperCase() === 'WITHDRAWAL')
-          .reduce((acc, m) => acc + Number(m.amount || 0), 0);
+          this.loading = false;
 
-        this.buildPdf({
-          from,
-          to,
-          customer,
-          accounts: accounts ?? [],
-          movements: movements ?? [],
-          totalDeposit,
-          totalWithdrawal,
-        });
-      },
-      error: (err) => {
-        this.loading = false;
-        console.error(err);
-        this.msg.add({ severity: 'error', summary: 'Error', detail: 'No se pudo generar el reporte' });
-      }
-    });
+          const totalDeposit = (resp.movements ?? [])
+            .filter((m: any) => String(m.type).toUpperCase() === 'DEPOSIT')
+            .reduce((acc: number, m: any) => acc + Number(m.amount || 0), 0);
+
+          const totalWithdrawal = (resp.movements ?? [])
+            .filter((m: any) => String(m.type).toUpperCase() === 'WITHDRAWAL')
+            .reduce((acc: number, m: any) => acc + Number(m.amount || 0), 0);
+
+          this.buildPdf({
+            from,
+            to,
+            customer: resp.customer,
+            accounts: resp.accounts ?? [],
+            movements: resp.movements ?? [],
+            totalDeposit,
+            totalWithdrawal,
+          });
+
+        },
+
+        error: (err) => {
+
+          this.loading = false;
+
+          console.error(err);
+
+          this.msg.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'No se pudo generar el reporte'
+          });
+
+        }
+
+      });
+
   }
 
  private buildPdf(data: {
@@ -149,7 +130,6 @@ export class ReportsComponent implements OnInit {
     data.customer?.name ??
     '-';
 
-  /* ===== TÍTULO ===== */
   doc.setFontSize(18);
   doc.text('Estado de Cuenta del Cliente', marginX, y);
   y += 10;
@@ -163,7 +143,6 @@ export class ReportsComponent implements OnInit {
   doc.line(marginX, y, pageWidth - marginX, y);
   y += 8;
 
-  /* ===== RESUMEN ===== */
   doc.setFontSize(12);
   doc.text('Resumen', marginX, y);
   y += 7;
@@ -172,7 +151,6 @@ export class ReportsComponent implements OnInit {
   doc.text(`Total Depósitos: ${this.money(data.totalDeposit)}`, marginX, y); y += 6;
   doc.text(`Total Retiros: ${this.money(data.totalWithdrawal)}`, marginX, y); y += 10;
 
-  /* ===== CUENTAS ===== */
   doc.setFontSize(12);
   doc.text('Cuentas', marginX, y);
   y += 8;
@@ -185,6 +163,7 @@ export class ReportsComponent implements OnInit {
     y += 10;
   } else {
     for (const a of data.accounts) {
+
       if (y > 275) {
         doc.addPage();
         y = 18;
@@ -200,7 +179,6 @@ export class ReportsComponent implements OnInit {
     y += 6;
   }
 
-  /* ===== MOVIMIENTOS ===== */
   doc.setFontSize(12);
   doc.text('Movimientos (en el período)', marginX, y);
   y += 8;
@@ -216,6 +194,7 @@ export class ReportsComponent implements OnInit {
     y += 8;
   } else {
     for (const m of movs) {
+
       if (y > 275) {
         doc.addPage();
         y = 18;
@@ -230,7 +209,6 @@ export class ReportsComponent implements OnInit {
     }
   }
 
-  /* ===== FOOTER ===== */
   doc.setFontSize(9);
   doc.setTextColor(120);
   doc.text('Generado por BANCO', marginX, 290);
@@ -238,7 +216,6 @@ export class ReportsComponent implements OnInit {
 
   doc.save(`estado-cuenta-${this.customerId}-${data.from}-${data.to}.pdf`);
 }
-
 
   private toIsoDate(d: Date): string {
     const yyyy = d.getFullYear();
@@ -252,17 +229,17 @@ export class ReportsComponent implements OnInit {
     if (Number.isNaN(n)) return '-';
     return n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   }
-  private translateMovementType(type: string): string {
-  switch (type) {
-    case 'DEPOSIT':
-      return 'DEPÓSITO';
-    case 'WITHDRAWAL':
-      return 'RETIRO';
-    default:
-      return type;
-  }
-}
 
+  private translateMovementType(type: string): string {
+    switch (type) {
+      case 'DEPOSIT':
+        return 'DEPÓSITO';
+      case 'WITHDRAWAL':
+        return 'RETIRO';
+      default:
+        return type;
+    }
+  }
 
   private tableHeader(doc: jsPDF, y: number, headers: string[]): number {
     const x = 14;

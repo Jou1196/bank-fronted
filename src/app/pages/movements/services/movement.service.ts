@@ -14,12 +14,12 @@ export interface MovementCreateRequest {
 
 @Injectable({ providedIn: 'root' })
 export class MovementService {
-  private readonly baseUrl = `${environment.apiUrl}/movimientos`;
+  private readonly baseUrl = `${environment.movementApi}/movements`;
 
   constructor(private http: HttpClient) {}
 
   getByAccount(accountId: string): Observable<Movement[]> {
-    return this.http.get<Movement[]>(`${this.baseUrl}/por-cuenta/${accountId}`);
+     return this.http.get<any[]>(`${this.baseUrl}/account/${accountId}`);
   }
 
   create(req: MovementCreateRequest): Observable<Movement> {

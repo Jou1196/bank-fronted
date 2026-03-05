@@ -13,7 +13,7 @@ export interface CreateAccountRequest {
 
 @Injectable({ providedIn: 'root' })
 export class AccountService {
-  private readonly baseUrl = `${environment.apiUrl}/cuentas`;
+  private readonly baseUrl = `${environment.accountApi}/accounts`;
 
   constructor(private http: HttpClient) {}
 
@@ -26,7 +26,7 @@ export class AccountService {
   }
 
   getByCustomer(customerId: string) {
-    return this.http.get<Account[]>(`${this.baseUrl}/por-cliente/${customerId}`);
+   return this.http.get<any[]>(`${this.baseUrl}/por-cliente/${customerId}`);
   }
 
   create(payload: CreateAccountRequest) {

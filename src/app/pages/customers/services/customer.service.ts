@@ -22,7 +22,7 @@ export interface CustomerUpdateRequest {
 
 @Injectable({ providedIn: 'root' })
 export class CustomerService {
-  private readonly baseUrl = `${environment.apiUrl}/clientes`;
+  private readonly baseUrl = `${environment.customerApi}/customers`;
 
   constructor(private http: HttpClient) {}
 
